@@ -1,0 +1,11 @@
+.update-btn {
+  margin-top: 10px;
+  float: right;
+  width: fit-content;
+  background-color: "green";
+}
+
+.main-btn {
+  margin-top: 10px;
+  float: right;
+}

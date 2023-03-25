@@ -1,0 +1,11 @@
+.add-btn {
+  margin-top: 10px;
+  float: right;
+  width: 50px;
+  background-color: "green";
+}
+
+.main-btn {
+  margin-top: 10px;
+  float: right;
+}
