@@ -1,12 +1,16 @@
-const db = require("../../database");
+const {
+  create,
+  getBooks,
+  deleteBookById,
+  getBook,
+  update,
+} = require("./service");
 
 // Get All Books
 async function getAllBooks(req, res) {
-  const q = "SELECT * FROM books";
-
-  db.query(q, (err, data) => {
+  getBooks((err, data) => {
     if (err) {
-      return res.send({ error: err });
+      return res.status(500).send({ error: err });
     } else {
       res.status(200).send({ data });
     }
@@ -15,14 +19,11 @@ async function getAllBooks(req, res) {
 
 // Add A Book
 async function addBook(req, res) {
-  const q = "INSERT INTO books (`title`,`desc`,`cover`) VALUES (?)";
-  const { title, desc, cover } = req.body;
+  const data = req.body;
 
-  const values = [title, desc, cover];
-
-  db.query(q, [values], (err, data) => {
+  create(data, (err, data) => {
     if (err) {
-      return res.send({ error: err });
+      return res.status(500).send({ error: err });
     } else {
       res.status(200).send({ message: "Book Added Successfully", data });
     }
@@ -33,11 +34,9 @@ async function addBook(req, res) {
 async function deleteBook(req, res) {
   const bookId = req.params.id;
 
-  const q = "DELETE FROM books WHERE id = ?";
-
-  db.query(q, [bookId], (err, data) => {
+  deleteBookById([bookId], (err, data) => {
     if (err) {
-      return res.send({ error: err });
+      return res.status(500).send({ error: err });
     } else {
       res
         .status(200)
@@ -50,11 +49,9 @@ async function deleteBook(req, res) {
 async function getBookById(req, res) {
   const bookId = req.params.id;
 
-  const q = "SELECT * FROM books WHERE id = ?";
-
-  db.query(q, [bookId], (err, data) => {
+  getBook([bookId], (err, data) => {
     if (err) {
-      return res.send({ error: err });
+      return res.status(500).send({ error: err });
     } else {
       res.status(200).send({ data });
     }
@@ -64,14 +61,11 @@ async function getBookById(req, res) {
 // Update Book
 async function UpdateBook(req, res) {
   const bookId = req.params.id;
-  const { title, desc, cover } = req.body;
+  const data = req.body;
 
-  const values = [title, desc, cover];
+  data.id = bookId;
 
-  const q =
-    "UPDATE books SET `title` = ?, `desc` = ?, `cover` = ? WHERE id = ?";
-
-  db.query(q, [...values, bookId], (err, data) => {
+  update(data, (err, data) => {
     if (err) {
       return res.send({ error: err });
     } else {
